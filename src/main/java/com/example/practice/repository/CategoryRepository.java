@@ -7,5 +7,7 @@ import com.example.practice.entity.Category;
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
      public Category findByCategoryName(String categoryName);
+     
+     public boolean existsByCategoryName(String categoryName);
 
 }

@@ -1,6 +1,7 @@
 package com.example.practice.service;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -18,13 +19,25 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryRepository repository;
+	
+	@Autowired
+	private ModelMapper mapper;
+	
+	public ModelMapper getMapper() {
+		return mapper;
+	}
 
-	ModelMapper mapper = new ModelMapper();
+	public void setMapper(ModelMapper mapper) {
+		this.mapper = mapper;
+	}
 
 	@Override
 	public CategoryResponseModel createCategory(CategoryRequestModel request) {
-		// TODO Auto-generated method stub
+		
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		boolean isExists = repository.existsByCategoryName(request.getCategoryName());
+		
+		if(!isExists) {
 		Category entityRequest = mapper.map(request, Category.class);
 		entityRequest.setCreatedBy("user");
 		entityRequest.setCreatedOn(new Date());
@@ -32,16 +45,24 @@ public class CategoryServiceImpl implements CategoryService {
 		Category entityResponse = repository.save(entityRequest);
 		CategoryResponseModel response = mapper.map(entityResponse, CategoryResponseModel.class);
 		return response;
+		}
+		else {
+			return null;
+		}
 	}
 
-	@Override
-	public void updateCategory(CategoryRequestModel request) {
+	public CategoryResponseModel updateCategory(CategoryRequestModel request) {
 		// TODO Auto-generated method stub
-		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-		Category entity = mapper.map(request, Category.class);
-		entity.setUpdatedBy("user");
-		entity.setUpdatedOn(new Date());
-		repository.save(entity);
+		boolean isExists = repository.existsById(request.getId());
+		if(isExists) {
+			mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+			Category entity = mapper.map(request, Category.class);
+			entity.setUpdatedBy("user");
+			entity.setUpdatedOn(new Date());
+			Category responseEntity = repository.save(entity);
+			return mapper.map(responseEntity, CategoryResponseModel.class);
+		}
+		return null;
 	}
 
 	@Override
@@ -56,16 +77,22 @@ public class CategoryServiceImpl implements CategoryService {
 		List<CategoryResponseModel> responseList = repository.findAll()
 		.stream()
 		.map( e -> mapper.map(e, CategoryResponseModel.class)).collect(Collectors.toList());
-		
 		return responseList;
 	}
 
+	
 	@Override
 	public CategoryResponseModel getCategoryByName(String categoryName) {
-		// TODO Auto-generated method stub
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		Category entity = repository.findByCategoryName(categoryName);
-		return mapper.map(entity, CategoryResponseModel.class);
-	}
+		if(entity != null)
+		{
+		   return mapper.map(entity, CategoryResponseModel.class);
+		}
+		else{
+			return null;
+		}
+	
+	 }
 
 }

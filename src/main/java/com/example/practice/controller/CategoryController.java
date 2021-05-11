@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class CategoryController {
 	@Autowired
 	private CategoryService service;
 	
-	@PostMapping("/category")
+	@PostMapping(value = "/category",consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createCategory(@RequestBody CategoryRequestModel request)
 	{
 		CategoryResponseModel response = service.createCategory(request);
@@ -33,11 +34,11 @@ public class CategoryController {
 	}
 	
 	@PutMapping("/category/{id}")
-	public ResponseEntity updateCategory(@PathVariable(value = "id") Integer id, @RequestBody CategoryRequestModel request)
+	public ResponseEntity<?> updateCategory(@PathVariable(value = "id") Integer id, @RequestBody CategoryRequestModel request)
 	{
 		request.setId(id);
-		service.updateCategory(request);
-		return new ResponseEntity(HttpStatus.OK);
+		CategoryResponseModel response = service.updateCategory(request);
+		return new ResponseEntity<CategoryResponseModel>(response, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/category/{id}")

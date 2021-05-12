@@ -2,6 +2,8 @@ package com.example.practice.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,15 +28,16 @@ public class CategoryController {
 	@Autowired
 	private CategoryService service;
 	
+	
 	@PostMapping(value = "/category",consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createCategory(@RequestBody CategoryRequestModel request)
+	public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryRequestModel request)
 	{
 		CategoryResponseModel response = service.createCategory(request);
 		return new ResponseEntity<CategoryResponseModel>(response, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/category/{id}")
-	public ResponseEntity<?> updateCategory(@PathVariable(value = "id") Integer id, @RequestBody CategoryRequestModel request)
+	public ResponseEntity<?> updateCategory(@PathVariable(value = "id") Integer id,@Valid @RequestBody CategoryRequestModel request)
 	{
 		request.setId(id);
 		CategoryResponseModel response = service.updateCategory(request);

@@ -1,11 +1,17 @@
 package com.example.practice.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class CategoryRequestModel {
 	
 	private Integer id;
 
+	@NotNull(message="Category Name Cannot be empty")
+	@Size(min=3, max=30, message="Size must be greater than 3 and less than 30")
 	private String categoryName;
 	
+	@Size(min=3, max=30, message="Size must be greater than 3 and less than 30")
 	private String description;
 
 	public CategoryRequestModel() {

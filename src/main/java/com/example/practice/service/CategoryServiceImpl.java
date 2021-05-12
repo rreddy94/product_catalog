@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.practice.entity.Category;
+import com.example.practice.exception.EntityExistsException;
+import com.example.practice.exception.EntityNotFoundException;
 import com.example.practice.model.CategoryRequestModel;
 import com.example.practice.model.CategoryResponseModel;
 import com.example.practice.repository.CategoryRepository;
@@ -37,24 +39,27 @@ public class CategoryServiceImpl implements CategoryService {
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		boolean isExists = repository.existsByCategoryName(request.getCategoryName());
 		
-		if(!isExists) {
-		Category entityRequest = mapper.map(request, Category.class);
-		entityRequest.setCreatedBy("user");
-		entityRequest.setCreatedOn(new Date());
-
-		Category entityResponse = repository.save(entityRequest);
-		CategoryResponseModel response = mapper.map(entityResponse, CategoryResponseModel.class);
-		return response;
+		if(isExists) {
+		  throw new EntityExistsException("Provided Category Already Exists");
 		}
 		else {
-			return null;
+			Category entityRequest = mapper.map(request, Category.class);
+			entityRequest.setCreatedBy("user");
+			entityRequest.setCreatedOn(new Date());
+
+			Category entityResponse = repository.save(entityRequest);
+			CategoryResponseModel response = mapper.map(entityResponse, CategoryResponseModel.class);
+			return response;
 		}
 	}
 
 	public CategoryResponseModel updateCategory(CategoryRequestModel request) {
 		// TODO Auto-generated method stub
 		boolean isExists = repository.existsById(request.getId());
-		if(isExists) {
+		
+		if(!isExists) {
+		  throw new EntityNotFoundException("Provided Category is not found");
+		}else {
 			mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 			Category entity = mapper.map(request, Category.class);
 			entity.setUpdatedBy("user");
@@ -62,7 +67,6 @@ public class CategoryServiceImpl implements CategoryService {
 			Category responseEntity = repository.save(entity);
 			return mapper.map(responseEntity, CategoryResponseModel.class);
 		}
-		return null;
 	}
 
 	@Override
@@ -90,9 +94,7 @@ public class CategoryServiceImpl implements CategoryService {
 		   return mapper.map(entity, CategoryResponseModel.class);
 		}
 		else{
-			return null;
+			throw new EntityNotFoundException("Requested Category is not found");
 		}
-	
 	 }
-
 }

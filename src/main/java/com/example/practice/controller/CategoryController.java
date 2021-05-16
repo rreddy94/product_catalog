@@ -57,7 +57,6 @@ public class CategoryController {
 	   return new ResponseEntity<List<CategoryResponseModel>>(categoryList, HttpStatus.OK);
 	}
 	
-	
 	@GetMapping("/category/{name}")
 	public ResponseEntity<CategoryResponseModel> getCategoryByName(@PathVariable(value = "name") String name)
 	{
@@ -65,7 +64,4 @@ public class CategoryController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 		
 	}
-	
-	
-	
 }

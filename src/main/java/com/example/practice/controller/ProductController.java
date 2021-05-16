@@ -56,7 +56,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/product")
-	public ResponseEntity<?> getCategoryList()
+	public ResponseEntity<?> getProductList()
 	{
 	   List<ProductResponseModel> productList = service.getProductList();
 	   return new ResponseEntity<List<ProductResponseModel>>(productList, HttpStatus.OK);

@@ -2,7 +2,6 @@ package com.example.practice.service;
 
 import java.util.List;
 
-import com.example.practice.entity.Category;
 import com.example.practice.model.CategoryRequestModel;
 import com.example.practice.model.CategoryResponseModel;
 

@@ -9,25 +9,28 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 @Entity
-public class Product {
+@Table(name="user_info")
+public class User {
+	
 	@Id
-	@Column(name="PRODUCT_ID")
+	@Column(name="USER_ID")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Integer id;
 	
-	@Column(name="PRODUCT_NAME")
-	private String productName;
+	@Column(name="FIRST_NAME")
+	private String firstName;
 	
-	@Column(name="DESCRIPTION")
-	private String description;
+	@Column(name="LAST_NAME")
+	private String lastName;
 	
-	@Column(name="PRICE")
-	private Float price;
+	@Column(name="EMAIL")
+	private String email;
 	
-	@Column(name="QUANTITY")
-	private Integer quantity;
+	@Column(name="PASSWORD")
+	private String password;
 	
 	@Column(name="CREATED_BY")
 	private String createdBy;
@@ -42,12 +45,11 @@ public class Product {
 	private Date updatedOn;
 	
 	@ManyToOne
-	@JoinColumn(name="CATEGORY_ID")
-	private Category category;
+	@JoinColumn(name="ROLE_ID")
+	private Role role;
 	
-	public Product() {
-		
-	}
+	@OneToOne(mappedBy="user")
+	private ShopCart shopCart;
 
 	public Integer getId() {
 		return id;
@@ -57,36 +59,36 @@ public class Product {
 		this.id = id;
 	}
 
-	public String getProductName() {
-		return productName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public Float getPrice() {
-		return price;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setPrice(Float price) {
-		this.price = price;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public Integer getQuantity() {
-		return quantity;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getCreatedBy() {
@@ -121,13 +123,12 @@ public class Product {
 		this.updatedOn = updatedOn;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setRole(Role role) {
+		this.role = role;
 	}
-
 	
 }

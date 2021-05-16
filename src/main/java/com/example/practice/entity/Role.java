@@ -7,27 +7,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
-public class Product {
+@Table(name="ROLE")
+public class Role {
+	
 	@Id
-	@Column(name="PRODUCT_ID")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@Column(name="ROLE_ID")
 	private Integer id;
 	
-	@Column(name="PRODUCT_NAME")
-	private String productName;
-	
-	@Column(name="DESCRIPTION")
-	private String description;
-	
-	@Column(name="PRICE")
-	private Float price;
-	
-	@Column(name="QUANTITY")
-	private Integer quantity;
+	@Column(name="ROLE_NAME")
+	private String roleName;
 	
 	@Column(name="CREATED_BY")
 	private String createdBy;
@@ -40,14 +32,6 @@ public class Product {
 	
 	@Column(name="UPDATED_ON")
 	private Date updatedOn;
-	
-	@ManyToOne
-	@JoinColumn(name="CATEGORY_ID")
-	private Category category;
-	
-	public Product() {
-		
-	}
 
 	public Integer getId() {
 		return id;
@@ -57,36 +41,12 @@ public class Product {
 		this.id = id;
 	}
 
-	public String getProductName() {
-		return productName;
+	public String getRoleName() {
+		return roleName;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Float getPrice() {
-		return price;
-	}
-
-	public void setPrice(Float price) {
-		this.price = price;
-	}
-
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
 	public String getCreatedBy() {
@@ -120,14 +80,4 @@ public class Product {
 	public void setUpdatedOn(Date updatedOn) {
 		this.updatedOn = updatedOn;
 	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
-	
 }
